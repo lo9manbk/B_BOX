@@ -1,0 +1,47 @@
+int row = 0;
+int col = 0;
+char *video = (char*) 0xb8000;
+
+void putchar(char c) {
+  if (c == '\n'){
+  col = 0;
+  row++;
+  return;
+}
+    int index = (row * 80 + col) * 2;
+
+    video[index] = c;
+    video[index + 1] = 0x07;
+
+    col++;
+}
+
+void print(char *str) {
+    int i = 0;
+
+    while (str[i] !=  0) {
+  
+        putchar(str[i]);
+        i++;
+    }
+} 
+
+void clear_screen (){      putchar(str[i]);
+        i++;
+    }
+}
+
+void clear_screen (){
+  int i =0;
+  while (i < 80 * 25) {
+  video[i * 2] = ' ';
+  video [i * 2 + 1] = 0x07;
+  i++;
+  }
+}
+
+void kernel_main() {
+    print("Hello from kernel \n");
+    print("the second line..............\n");
+    print("the third line...............\n");
+}
