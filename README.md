@@ -1,14 +1,14 @@
-# first_os 🖥️
+# B_BOX 🖥️
 
 A simple operating system kernel built from scratch for learning and experimenting with low-level system programming.
 
-> 🚧 **Work in Progress** — This project is under active development.
+> 🚧 **Work in Progress** — B_BOX is an experimental operating system project under active development.
 
 ## 📖 About
 
-**first_os** is a personal operating-system development project created to explore how computers work at a low level.
+**B_BOX** is a personal operating-system development project created to explore how computers work at a low level.
 
-The project focuses on building a small kernel from scratch and learning the fundamentals behind:
+The project focuses on building a small x86 kernel from scratch and understanding the fundamentals behind:
 
 * Operating system kernels
 * x86 architecture
@@ -16,6 +16,8 @@ The project focuses on building a small kernel from scratch and learning the fun
 * Bare-metal programming
 * VGA text mode
 * Keyboard input
+* Terminal interaction
+* Port-mapped I/O
 * Memory management
 * Hardware communication
 * Low-level C and Assembly programming
@@ -31,15 +33,17 @@ The goal is not to create a production-ready operating system, but to understand
 * **GNU LD** — Kernel linking
 * **GRUB** — Bootloader
 * **GRUB-MKRESCUE** — ISO generation
-* **QEMU** — Virtual machine/testing
+* **QEMU** — Virtual machine and testing
 
 ## 📁 Project Structure
 
 ```text
-first_os/
+B_BOX/
 ├── kernel/
 │   ├── kernel.c
-│   └── kernel.asm
+│   ├── kernel.asm
+│   ├── terminal.c
+│   └── terminal.h
 ├── iso/
 ├── Makefile
 ├── linker.ld
@@ -59,62 +63,102 @@ sudo apt update
 sudo apt install build-essential nasm grub-pc-bin grub-common xorriso qemu-system-x86
 ```
 
-### Build the kernel
-
-Clone the repository:
+### Clone the Repository
 
 ```bash
-git clone https://github.com/lo9manbk/first_os.git
-cd first_os
+git clone https://github.com/lo9manbk/B_BOX.git
+cd B_BOX
 ```
 
-Build the project:
+### Build
+
+Build the kernel and generate the bootable ISO:
 
 ```bash
 make
 ```
 
-This generates the operating-system ISO.
-
 ## 🚀 Running
 
-You can test the operating system using QEMU:
+You can test B_BOX using QEMU:
 
 ```bash
 qemu-system-i386 -cdrom os.iso
 ```
 
-If your build generates the ISO in another location, adjust the path accordingly.
+If the generated ISO is located somewhere else, adjust the path accordingly.
 
-## 🧠 What I'm Learning
+## ⌨️ Current Kernel Features
 
-This project is being developed as a practical way to learn:
+The kernel currently includes basic low-level functionality such as:
+
+* Kernel entry point
+* VGA text-mode output
+* Screen clearing
+* New-line handling
+* Terminal output
+* Basic screen scrolling
+* PS/2 keyboard input
+* Keyboard scan-code reading
+* Basic keyboard scan-code mapping
+* Port-mapped I/O using `inb`
+* Basic interaction between Assembly and C
+
+### Keyboard Input
+
+The kernel reads keyboard scan codes from the PS/2 keyboard controller using:
 
 ```text
-Bootloader
-    ↓
-Kernel Entry
-    ↓
-Assembly
-    ↓
-C Kernel
-    ↓
-Hardware I/O
-    ↓
 Keyboard
-    ↓
-Memory
-    ↓
-Processes / Scheduling
-    ↓
-File System
+   ↓
+Port 0x64
+   ↓
+Status Check
+   ↓
+Port 0x60
+   ↓
+Scan Code
+   ↓
+Keyboard Mapping
+   ↓
+ASCII Character
+   ↓
+Terminal
 ```
 
-The implementation of these components will be added progressively.
+This provides the foundation for developing a more complete keyboard driver and interactive shell.
+
+## 🧠 Architecture
+
+The current development flow is approximately:
+
+```text
+BIOS / Boot Process
+        ↓
+GRUB Bootloader
+        ↓
+Kernel Entry
+        ↓
+Assembly
+        ↓
+C Kernel
+        ↓
+VGA Terminal
+        ↓
+Port I/O
+        ↓
+Keyboard Controller
+        ↓
+Keyboard Input
+        ↓
+Terminal Interaction
+```
+
+Future components will extend this architecture with interrupts, memory management, processes, and a file system.
 
 ## 🗺️ Roadmap
 
-### ✅ Current / Implemented
+### ✅ Implemented
 
 * [x] Basic kernel
 * [x] x86 boot process
@@ -122,18 +166,24 @@ The implementation of these components will be added progressively.
 * [x] Assembly entry code
 * [x] VGA text output
 * [x] Screen clearing
-* [x] New line handling
+* [x] New-line handling
 * [x] Basic terminal output
+* [x] Basic screen scrolling
+* [x] PS/2 keyboard input
+* [x] Keyboard scan-code handling
+* [x] Basic keyboard mapping
+* [x] Port-mapped I/O
+* [x] C/Assembly interaction
 
 ### 🔨 In Development
 
-* [ ] Keyboard driver
-* [ ] Improved terminal
-* [x] Screen scrolling
-* [ ] Port I/O
+* [ ] Improved keyboard driver
+* [ ] Better terminal handling
 * [ ] Interrupt Descriptor Table (IDT)
 * [ ] Hardware interrupts
+* [ ] Keyboard interrupts
 * [ ] Memory management
+* [ ] Better screen and cursor management
 
 ### 🔮 Future Goals
 
@@ -150,15 +200,33 @@ The implementation of these components will be added progressively.
 
 ## 🎯 Purpose
 
-The main purpose of **first_os** is education and experimentation.
+The main purpose of **B_BOX** is education and experimentation.
 
-Building an operating system from scratch provides a practical understanding of what happens underneath high-level software and helps develop strong knowledge of:
+Building an operating system from scratch provides a practical understanding of what happens underneath high-level software and helps develop knowledge of:
 
-**Computer Architecture → Assembly → C → Kernel → Hardware**
+```text
+Computer Architecture
+        ↓
+Assembly
+        ↓
+C
+        ↓
+Kernel
+        ↓
+Hardware I/O
+        ↓
+Drivers
+        ↓
+Memory
+        ↓
+Processes
+        ↓
+File System
+```
 
 ## 📸 Screenshots
 
-Screenshots will be added as the operating system develops.
+Screenshots will be added as B_BOX develops.
 
 ## 🤝 Contributing
 
@@ -168,7 +236,7 @@ If you find a bug or have an idea, feel free to open an **Issue** or submit a **
 
 ## ⚠️ Disclaimer
 
-This operating system is experimental and should be run in a virtual machine such as QEMU.
+B_BOX is experimental software and should preferably be tested inside a virtual machine such as QEMU.
 
 Do **not** use experimental builds on important physical hardware.
 
@@ -178,6 +246,6 @@ License information will be added as the project develops.
 
 ---
 
-⭐ If you find this project interesting, feel free to star the repository and follow its development.
+⭐ If you find **B_BOX** interesting, feel free to star the repository and follow its development.
 
 **Built from scratch. One line of code at a time.**
