@@ -249,3 +249,16 @@ License information will be added as the project develops.
 ⭐ If you find **B_BOX** interesting, feel free to star the repository and follow its development.
 
 **Built from scratch. One line of code at a time.**
+
+## 📜 License
+
+**B_BOX** is licensed under the GNU General Public License v3.0 (GPL-3.0).
+
+Copyright (C) 2026 **lo9manbk**.
+
+This project is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+See the `LICENSE` file for the complete license.
