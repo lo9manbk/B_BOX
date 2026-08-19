@@ -70,9 +70,6 @@ void print(char *str){
 
 
 void scroll_screen(){
-	video[0] = 'S';
-	video[1] = 0x4F;
-
 	int r = 1;
 
 	while (r < VGA_HEIGHT){
@@ -102,4 +99,19 @@ row = VGA_HEIGHT - 1;
 col = 0;
 
 }
+/*
+// this a future pass function to test lowlevel control commend
 
+void B_BOX_VERIFICATION (char c){
+	char pass[] = { 'B', 'B', 'O', 'X' };  int i = 0; int bbox = 0;
+ if (c != 0) { putchar(c);  
+	if (pass[i] == c)  { bbox++; i++; 
+		if (bbox == 4) { 
+			new_line(); 
+			print(" admin verificated "); 
+			new_line(); print(" future command not now u fucher"); 
+			new_line();    i = 0;    bbox = 0; 
+		} } 
+			else { i = 0; bbox = 0; }
+    }}
+*/

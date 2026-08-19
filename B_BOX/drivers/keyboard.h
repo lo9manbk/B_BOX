@@ -11,5 +11,6 @@
 
 unsigned char inb(unsigned short port);
 unsigned char keyboard_read();
+void keyboard_handle();
 
 #endif
