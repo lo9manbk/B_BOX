@@ -16,5 +16,6 @@ void print(char *str);
 void new_line();
 void clear_screen();
 void scroll_screen();
+void backspace();
 #endif
 

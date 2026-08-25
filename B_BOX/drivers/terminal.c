@@ -8,25 +8,41 @@
 
 #include "terminal.h"
 
+#define BUFFER_LINES 1000
 #define VGA_WIDTH 80
 #define VGA_HEIGHT 25
 
+char terminal_buffer[BUFFER_LINES][VGA_WIDTH];
 
 int row =0;
 int col =0;
 char *video = (char*)0xb8000;
 
-void clear_screen(){
-	int i =0;
+void clear_screen()
+{
+    int r = 0;
 
-	while (i < VGA_WIDTH * VGA_HEIGHT ){
-	video [i*2]=' ';
-	video [i*2 + 1] = 0x07;
-	i++;
-	}
+    while (r < VGA_HEIGHT)
+    {
+        int c = 0;
 
-	row =0;
-	col =0;
+        while (c < VGA_WIDTH)
+        {
+            terminal_buffer[r][c] = ' ';
+
+            int index = (r * VGA_WIDTH + c) * 2;
+
+            video[index] = ' ';
+            video[index + 1] = 0x07;
+
+            c++;
+        }
+
+        r++;
+    }
+
+    row = 0;
+    col = 0;
 }
 
 
@@ -49,6 +65,7 @@ void putchar(char c){
 
 	int index = (row * VGA_WIDTH +col) *2;
 
+	terminal_buffer[row][col];
 	video[index] = c;
 	video[index + 1] = 0x07;
 
@@ -99,6 +116,64 @@ row = VGA_HEIGHT - 1;
 col = 0;
 
 }
+
+
+void backspace()
+{
+    if (col > 0)
+    {
+        col--;
+
+        int index = (row * VGA_WIDTH + col) * 2;
+
+        terminal_buffer[row][col] = ' ';
+        video[index] = ' ';
+        video[index + 1] = 0x07;
+
+        return;
+    }
+
+    if (row > 0)
+    {
+        row--;
+
+        int previous_col = VGA_WIDTH - 1;
+
+        while (previous_col > 0 &&
+               terminal_buffer[row][previous_col] == ' ')
+        {
+            previous_col--;
+        }
+
+        col = previous_col + 1;
+
+        int index = (row * VGA_WIDTH + (col - 1)) * 2;
+
+        terminal_buffer[row][col - 1] = ' ';
+        video[index] = ' ';
+        video[index + 1] = 0x07;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 // this a future pass function to test lowlevel control commend
 

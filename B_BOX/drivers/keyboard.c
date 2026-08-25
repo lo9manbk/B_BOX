@@ -44,7 +44,7 @@ char keyboard_map[128] = {
     [0x16] = 'u',  [0x2F] = 'v',  [0x11] = 'w',  [0x2D] = 'x',
     [0x15] = 'y',  [0x2C] = 'z',
 
-    [0x39] = ' ',
+    [0x39] = ' ', [0x0E] = '\b',
 
     [0x02] = '1', [0x03] = '2', [0x04] = '3', [0x05] = '4',
     [0x06] = '5', [0x07] = '6', [0x08] = '7', [0x09] = '8',
@@ -67,6 +67,8 @@ char numbers_shift(char c) {
     }
     return c;
 }
+
+
 
 
 int shift_pressed = 0;
@@ -102,6 +104,11 @@ void keyboard_handle()
         return;
     }
 
+    if (code == 0x0E){
+        backspace();
+        return;
+    }
+
     // Normal key 
     char c = keyboard_map[code];
 
@@ -113,4 +120,6 @@ void keyboard_handle()
     else if (shift_pressed) { c =  numbers_shift(c); }
     putchar(c);
 }
+
+
 
